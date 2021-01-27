@@ -40,8 +40,8 @@ make -C docs html
 # Update GitHub Pages #
 #######################
  
-git config --global user.name "SoumyaParida"
-git config --global user.email "soumya.parida3@gmail.com"
+git config --global user.name "${GITHUB_ACTOR}"
+git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
  
 docroot=`mktemp -d`
 rsync -av "docs/build/html/" "${docroot}/"
@@ -50,7 +50,7 @@ pushd "${docroot}"
  
 # don't bother maintaining history; just generate fresh
 git init
-git remote add deploy "https://github.com/SoumyaParida/facetrix.git"
+git remote add deploy "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 git checkout -b gh-pages
  
 # add .nojekyll to the root so that github won't 404 on content added to dirs
@@ -85,3 +85,5 @@ popd # return to main repo sandbox root
  
 # exit cleanly
 exit 0
+EEOOFF
+chmod +x buildDocs.sh
